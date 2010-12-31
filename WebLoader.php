@@ -331,7 +331,20 @@ abstract class WebLoader extends \Nette\Application\Control {
 		}
 
 		if ($hasArgs) {
-			$this->files = $backup;
+			$this->files = array_merge($this->files, $backup);
+
+			// joined files
+			if($this->joinFiles) {
+				$file = $this->generate($backup);
+				echo $this->getElement($this->tempUri . "/" . $file);
+
+			// seperated files
+			} else {
+				foreach($backup as $file) {
+					$file = $this->generate(array($file));
+					echo $this->getElement($this->tempUri . "/" . $file);
+				}
+			}
 		}
 	}
 
